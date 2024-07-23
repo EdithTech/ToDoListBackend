@@ -9,7 +9,7 @@ const DB_URL = process.env.MONGO_URL;
 const connection = () => {  
     const TODOLIST_DB_URL = DB_URL;
 
-    mongoose.connect(TODOLIST_DB_URL, { useNewUrlParser: true, useUnifiedTopology: true });
+    mongoose.connect(TODOLIST_DB_URL);
 
     const db = mongoose.connection;
 
@@ -19,7 +19,7 @@ const connection = () => {
     db.on("disconnected", () => {
         console.log("Database Disconnected");
     })
-    db.on("error", () => {
+    db.on("error", (error) => {
         console.log("Error", error.message);
     })
 
