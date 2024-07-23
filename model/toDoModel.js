@@ -12,6 +12,16 @@ const toDoSchema = new mongoose.Schema({
         default: false
     },
 
+    pinToggle:{
+        type: Boolean,
+        default: false
+    },
+    
+    isDeleted:{
+        type: Boolean,
+        default: false
+    },
+
     createdAt: {
         type: Date,
         default: Date.now

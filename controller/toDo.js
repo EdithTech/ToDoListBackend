@@ -1,14 +1,13 @@
+import todo from "../model/toDoModel.js";
 import Todo from "../model/toDoModel.js";
 
 export const addToDo = async (req, res) => {
   try {
-    const newTodo = await Todo.create({
-      data: req.body.data,
-    });
+    const data = req.body;
+    const newTodo = new Todo(data);
+    const response = await newTodo.save();
 
-    await newTodo.save();
-
-    res.status(200).json(newTodo);
+    res.status(200).json(response);
   } catch (error) {
     console.log(error.message);
   }
@@ -35,8 +34,6 @@ export const toggleToDoDone = async (req, res) => {
       { new: true }
     )
 
-    await toggledToDo.save();
-
     res.status(200).json(toggledToDo);
 
   } catch (error) {
@@ -54,7 +51,6 @@ export const updateToDo = async (req, res) => {
       { new: true }
     )
     console.log("update", updatedToDo);
-    await updatedToDo.save(); 
 
     res.status(200).json(updatedToDo);
 
@@ -66,12 +62,13 @@ export const updateToDo = async (req, res) => {
 export const deleteToDo = async (req, res) => {
   try {
     // const toDoRef = await Todo.findById(req.params.id);
-
-    const deletedToDo = await Todo.deleteOne(
-      {_id: req.params.id},
+    const id = req.params.id;
+    const todo = await Todo.findById(id);
+    const deletedToDo = await Todo.findOneAndUpdate(
+      {_id: id},
+      {isDeleted: !todo.isDeleted},
+      {new: true}
     )
-    // console.log("update", updatedToDo);
-    // await deletedToDo.save(); 
 
     res.status(200).json(deletedToDo);
 
@@ -79,5 +76,39 @@ export const deleteToDo = async (req, res) => {
     console.log(error.message);
   }
 };
+
+export const restoreToDo = async (req, res) => {
+  try {
+    // const toDoRef = await Todo.findById(req.params.id);
+    const id = req.params.id;
+    const todo = await Todo.findById(id);
+    if(todo.isDeleted){
+      const restoredToDo = await Todo.findOneAndUpdate(
+        {_id: id},
+        {isDeleted: !todo.isDeleted},
+        {new: true}
+      )
+      res.status(200).json(restoredToDo);
+    }
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+export const pinUnpinToDo = async (req, res) => {
+  try{
+    const id = req.params.id;
+    const todo = await Todo.findById(id);
+    const pinUnpinUpdated = await Todo.findOneAndUpdate(
+      {_id: id},
+      {pinToggle: !todo.pinToggle},
+      {new: true}
+    )
+    res.status(200).json(pinUnpinUpdated);
+  }catch(error){
+    console.log(error);
+  }
+}
+
 
 
