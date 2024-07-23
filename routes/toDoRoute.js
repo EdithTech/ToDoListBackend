@@ -1,5 +1,4 @@
 import express from "express";
-import passport from "../auth.js";
 import {addToDo, deleteToDo, getAllToDos, pinUnpinToDo, toggleToDoDone, updateToDo} from "../controller/toDo.js";
 
 const route = express.Router();

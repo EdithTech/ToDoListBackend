@@ -1,5 +1,4 @@
 import UserModel from "../model/user.js"
-import passport from "../auth.js";
 import {generateToken} from '../jwt.js'
 import userModel from "../model/user.js";
 
