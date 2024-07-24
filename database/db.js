@@ -5,15 +5,15 @@ dotenv.config();
 
 const TODOLIST_DB_URL = process.env.MONGO_URL;
 
-const connection = (app) => {  
+const connection = () => {  
 
     mongoose.connect(TODOLIST_DB_URL);
 
     const db = mongoose.connection;
 
     db.on("connected", () => {
-        const port = process.env.PORT || 3000; 
-        app.listen(port, () => console.log(`Server is running on the ${port}`))
+        // const port = process.env.PORT || 3000; 
+        // app.listen(port, () => console.log(`Server is running on the ${port}`))
         console.log("Database Connected Succesfully");
     })
     db.on("disconnected", () => {

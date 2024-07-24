@@ -23,4 +23,7 @@ app.get('/', (req, res) => {
 app.use('/todo', jwtAuthMiddleware, toDoRoute);
 app.use('/user', userRoute);
 
-connection(app);
+connection();
+
+const port = process.env.PORT || 3000; 
+app.listen(port, () => console.log(`Server is running on the ${port}`))
