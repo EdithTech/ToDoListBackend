@@ -13,8 +13,8 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
 // authentication
-app.use(passport.initialize());
-const localAuthMiddleware = passport.authenticate('local', {session: false});
+// app.use(passport.initialize());
+// const localAuthMiddleware = passport.authenticate('local', {session: false});
 
 app.get('/', (req, res) => {
     res.send("Welcome to the To Do List App");
@@ -23,6 +23,4 @@ app.get('/', (req, res) => {
 app.use('/todo', jwtAuthMiddleware, toDoRoute);
 app.use('/user', userRoute);
 
-connection();
-const port = process.env.PORT || 3000; 
-app.listen(port, () => console.log(`Server is running on the ${port}`))
+connection(app);
