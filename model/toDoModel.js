@@ -12,7 +12,7 @@ const toDoSchema = new mongoose.Schema({
         default: false
     },
 
-    pinToggle:{
+    isPinned:{
         type: Boolean,
         default: false
     },

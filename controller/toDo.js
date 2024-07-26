@@ -12,11 +12,15 @@ export const addToDo = async (req, res) => {
   }
 };
 
-export const getAllToDos = async (req, res) => {
+export const getToDos = async (req, res) => {
   try {
     const allToDos = await Todo.find().sort({"createdAt" : -1})
+    const pinnedTodos = await Todo.find({isPinned: true});
+    const unPinnedTodos = await Todo.find({isPinned: false});
 
-    res.status(200).json(allToDos);
+    res.status(200).json({
+      allToDos, pinnedTodos, unPinnedTodos
+    });
     
   } catch (error) {
     console.log(error.message);
@@ -25,11 +29,10 @@ export const getAllToDos = async (req, res) => {
 
 export const toggleToDoDone = async (req, res) => {
   try {
-    const toDoRef = await Todo.findById(req.params.id);
 
     const toggledToDo = await Todo.findOneAndUpdate(
-      {_id: toDoRef._id },
-      {done: !toDoRef.done},
+      {_id: req.params.id },
+      [{ $set: { done: { $not: "$done" } } }],
       { new: true }
     )
 
@@ -62,10 +65,9 @@ export const deleteToDo = async (req, res) => {
   try {
     // const toDoRef = await Todo.findById(req.params.id);
     const id = req.params.id;
-    const todo = await Todo.findById(id);
     const deletedToDo = await Todo.findOneAndUpdate(
       {_id: id},
-      {isDeleted: !todo.isDeleted},
+      [{ $set: { isDeleted: { $not: "$isDeleted" } } }],
       {new: true}
     )
 
@@ -84,7 +86,7 @@ export const restoreToDo = async (req, res) => {
     if(todo.isDeleted){
       const restoredToDo = await Todo.findOneAndUpdate(
         {_id: id},
-        {isDeleted: !todo.isDeleted},
+        [{ $set: { isDeleted: { $not: "$isDeleted" } } }],
         {new: true}
       )
       res.status(200).json(restoredToDo);
@@ -97,10 +99,9 @@ export const restoreToDo = async (req, res) => {
 export const pinUnpinToDo = async (req, res) => {
   try{
     const id = req.params.id;
-    const todo = await Todo.findById(id);
     const pinUnpinUpdated = await Todo.findOneAndUpdate(
       {_id: id},
-      {pinToggle: !todo.pinToggle},
+      [{ $set: { isPinned: { $not: "$isPinned" } } }],
       {new: true}
     )
     res.status(200).json(pinUnpinUpdated);

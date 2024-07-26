@@ -1,9 +1,9 @@
 import express from "express";
-import {addToDo, deleteToDo, getAllToDos, pinUnpinToDo, toggleToDoDone, updateToDo} from "../controller/toDo.js";
+import {addToDo, deleteToDo, getToDos, pinUnpinToDo, toggleToDoDone, updateToDo} from "../controller/toDo.js";
 
 const route = express.Router();
 
-route.get('/getAllToDos', getAllToDos);
+route.get('/getToDos', getToDos);
 
 route.post('/addToDo',addToDo);
 route.post('/toggleToDoDone/:id',toggleToDoDone);
