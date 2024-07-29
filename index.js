@@ -20,7 +20,8 @@ app.get('/', (req, res) => {
     res.send("Welcome to the To Do List App");
 })
 
-app.use('/todo', jwtAuthMiddleware, toDoRoute);
+// app.use('/todo', jwtAuthMiddleware, toDoRoute);
+app.use('/todo', toDoRoute);
 app.use('/user', userRoute);
 
 connection();

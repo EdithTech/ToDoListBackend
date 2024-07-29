@@ -24,6 +24,7 @@ export const addUser = async (req, res) => {
 
 export const userLogin = async (req, res) => {
     try{
+        // console.log();
         const {username, password} = req.body;
 
         // const userId = req.user.id;
