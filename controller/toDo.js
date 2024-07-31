@@ -8,13 +8,13 @@ export const addToDo = async (req, res) => {
 
     res.status(200).json(response);
   } catch (error) {
-    console.log(error.message);
+    console.log('Add To do' ,error.message);
   }
 };
 
 export const getToDos = async (req, res) => {
   try {
-    const allToDos = await Todo.find().sort({"createdAt" : -1})
+    const allToDos = await Todo.find({isDeleted: false}).sort({"createdAt" : -1})
     const pinnedTodos = await Todo.find({isPinned: true});
     const unPinnedTodos = await Todo.find({isPinned: false});
 
