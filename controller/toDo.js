@@ -14,9 +14,9 @@ export const addToDo = async (req, res) => {
 
 export const getToDos = async (req, res) => {
   try {
-    const allToDos = await Todo.find({isDeleted: false}).sort({"createdAt" : -1})
-    const pinnedTodos = await Todo.find({isPinned: true});
-    const unPinnedTodos = await Todo.find({isPinned: false});
+    const allToDos = await Todo.find({isDeleted: false}).sort({"createdAt" : -1});
+    const pinnedTodos = await Todo.find({isPinned: true, isDeleted: false}).sort({"createdAt" : -1});
+    const unPinnedTodos = await Todo.find({isPinned: false, isDeleted: false}).sort({"createdAt" : -1});
 
     res.status(200).json({
       allToDos, pinnedTodos, unPinnedTodos
