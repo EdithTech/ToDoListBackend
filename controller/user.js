@@ -31,7 +31,7 @@ export const userLogin = async (req, res) => {
         const user = await userModel.findOne({username: username});
 
         if(!user || !(await user.comparePassword(password))){
-            return res.status(401),json({error: "Invalid Username or Password"})
+            return res.status(401).json({error: "Invalid Username or Password"})
         }
         
         const userPayload = {
@@ -45,8 +45,7 @@ export const userLogin = async (req, res) => {
         return res.status(200).json({token: token});
 
     }catch(error){
-        console.log(error);
+        console.log("login error",error);
         return res.status(401).json({error: error});
-        });
     }
 }
