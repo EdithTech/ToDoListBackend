@@ -46,6 +46,7 @@ export const userLogin = async (req, res) => {
 
     }catch(error){
         console.log(error);
-        return res.status(401).json({error: "Invalid Token"});
+        return res.status(401).json({error: error});
+        });
     }
 }
