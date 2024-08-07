@@ -42,7 +42,7 @@ export const userLogin = async (req, res) => {
         const token = generateToken(userPayload);
 
         console.log("login token", token);
-        return res.status(200).json({token: token});
+        return res.status(200).json({username: user.username, token: token});
 
     }catch(error){
         console.log("login error",error);
