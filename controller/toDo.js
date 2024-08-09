@@ -15,8 +15,9 @@ export const addToDo = async (req, res) => {
 
 export const getToDos = async (req, res) => {
   try {
+    console.log("userId",req.user.id);
     
-    const userId = req.user.userId;
+    const userId = req.user.id;
     const allToDos = await Todo.find({ isDeleted: false, userId }).sort({ "createdAt": -1 });
     const pinnedTodos = await Todo.find({ isPinned: true, isDeleted: false, userId }).sort({ "createdAt": -1 });
     const unPinnedTodos = await Todo.find({ isPinned: false, isDeleted: false, userId }).sort({ "createdAt": -1 });
