@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const TODOLIST_DB_URL = process.env.MONGO_URL;
+const TODOLIST_DB_URL = process.env.MONGO_URL;  
 
 const connection = () => {  
 
@@ -12,7 +12,7 @@ const connection = () => {
     const db = mongoose.connection;
 
     db.on("connected", () => {
-        console.log("Database Connected Succesfully");
+        console.log("Database Connected Succesfully", TODOLIST_DB_URL);
     })
     db.on("disconnected", () => {
         console.log("Database Disconnected");

@@ -2,10 +2,12 @@ import jwt from "jsonwebtoken";
 
 const jwtAuthMiddleware = (req, res, next) => {
   try{
-    // console.log("req", req);
-    const token = req.headers.authorization.split(" ")[1];
+    console.log("req", req.headers);
+    const token = req.headers.authorization;
     // console.log("Auth middleware", token);
-
+    if(!token){
+      throw new Error("No token found")
+    }
     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
     req.user = decoded;
     next();
@@ -17,6 +19,7 @@ const jwtAuthMiddleware = (req, res, next) => {
 
 const generateToken = (userData) => {
     // this will generate the token
+    // userdata = > userId, role
     return jwt.sign(userData, process.env.JWT_SECRET_KEY);
 }
 

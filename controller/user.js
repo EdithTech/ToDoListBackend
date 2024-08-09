@@ -1,51 +1,40 @@
-import UserModel from "../model/user.js"
-import {generateToken} from '../jwt.js'
+import UserModel from "../model/user.js";
+import { generateToken } from '../jwt.js';
 import userModel from "../model/user.js";
 
 export const addUser = async (req, res) => {
-    try{
+    try {
         const data = req.body;
         const newUser = new UserModel(data);
         const response = await newUser.save();
 
-        const userPayload = {
-            id: newUser.id,
-            username: newUser.username
-        }
-
-        const token = generateToken(userPayload);
-
-        res.status(200).json({response: response, token: token});
-
-    }catch(error){
-        console.log("Create User Error", error.message);
+        res.status(200).json({ response: response });
+    } catch (error) {
+        console.error("Create User Error:", error.message);
+        res.status(500).json({ message: 'Failed to create user', error: error.message });
     }
-}
+};
 
 export const userLogin = async (req, res) => {
-    try{
-        // console.log();
-        const {username, password} = req.body;
+    try {
+        const { username, password } = req.body;
+        const user = await userModel.findOne({ username: username });
 
-        // const userId = req.user.id;
-        const user = await userModel.findOne({username: username});
-
-        if(!user || !(await user.comparePassword(password))){
-            return res.status(401).json({error: "Invalid Username or Password"})
+        if (!user || !(await user.comparePassword(password))) {
+            return res.status(401).json({ error: "Invalid Username or Password" });
         }
-        
+
         const userPayload = {
             id: user.id,
             username: user.username,
-        }
+        };
 
         const token = generateToken(userPayload);
 
-        console.log("login token", token);
-        return res.status(200).json({username: user.username, token: token});
-
-    }catch(error){
-        console.log("login error",error);
-        return res.status(401).json({error: error});
+        console.log("Login token:", token);
+        return res.status(200).json({ userId: user.id, token: token });
+    } catch (error) {
+        console.error("Login error:", error.message);
+        return res.status(500).json({ message: 'Failed to log in', error: error.message });
     }
-}
+};
